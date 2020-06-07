@@ -42,7 +42,18 @@ public class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> impl
     protected List<Photo> doInBackground(String... strings) {
         Log.d(TAG, "doInBackground: starts");
 
-        String destinationUri = createUri(strings[0], mLanguage, mMatchAll);
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String s : strings) {
+            i++;
+            if (i == 1) {
+                sb.append(s);
+            } else {
+                sb.append(",").append(s);
+            }
+        }
+        String destinationUri = createUri(sb.toString(), mLanguage, mMatchAll);
+        Log.d(TAG, "doInBackground: Uri = " + destinationUri);
         GetRawData getRawData = new GetRawData(this);
         getRawData.runInSameThread(destinationUri);
 
