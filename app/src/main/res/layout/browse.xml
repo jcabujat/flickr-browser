@@ -11,8 +11,6 @@
         android:id="@+id/thumbnail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_weight="1"
         android:scaleType="fitStart"
         app:srcCompat="@drawable/baseline_image_black_48dp" />

@@ -1,21 +1,22 @@
 package com.jocabujat.flickrbrowser;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable {
+public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable,
+        RecyclerItemClickListener.OnRecyclerClickListener {
     private static final String TAG = "MainActivity";
     private FlickrRecyclerViewAdapter mFlickrRecyclerViewAdapter;
 
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, this));
+
         mFlickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(this, new ArrayList<Photo>());
         recyclerView.setAdapter(mFlickrRecyclerViewAdapter);
 
@@ -83,5 +87,17 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
             Log.e(TAG, "onDataAvailable: failed with status " + status);
         }
         Log.d(TAG, "onDataAvailable: ends");
+    }
+
+    @Override
+    public void OnItemClick(View view, int position) {
+        Log.d(TAG, "OnItemClick: starts");
+        Toast.makeText(MainActivity.this, "Normal tap at position " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void OnItemLongClick(View view, int position) {
+        Log.d(TAG, "OnItemLongClick: starts");
+        Toast.makeText(MainActivity.this, "Long press at position " + position, Toast.LENGTH_SHORT).show();
     }
 }
