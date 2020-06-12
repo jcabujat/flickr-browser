@@ -1,31 +1,38 @@
 package com.jocabujat.flickrbrowser;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
-
-public class PhotoDetailActivity extends AppCompatActivity {
+public class PhotoDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        activateToolbar(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Intent intent = getIntent();
+        Photo photo = (Photo) intent.getSerializableExtra(PHOTO_TRANSFER);
+        if (photo != null) {
+            TextView photoTitle = findViewById(R.id.photo_title);
+            photoTitle.setText(photo.getTitle());
+
+            TextView photoTags = findViewById(R.id.photo_tags);
+            photoTags.setText(photo.getTags());
+
+            TextView photoAuthor = findViewById(R.id.photo_author);
+            photoAuthor.setText(photo.getAuthorId());
+
+            ImageView photoImage = findViewById(R.id.photo_image);
+            Picasso.get().load(photo.getLink())
+                    .error(R.drawable.baseline_image_black_48dp)
+                    .placeholder(R.drawable.baseline_image_black_48dp)
+                    .into(photoImage);
+
+        }
     }
 }

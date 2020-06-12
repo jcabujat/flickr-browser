@@ -93,7 +93,7 @@ public class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> impl
 
                     JSONObject jsonMedia = jsonPhoto.getJSONObject("media");
                     String photoURL = jsonMedia.getString("m");
-                    String link = photoURL.replaceFirst("_m", "_b");
+                    String link = photoURL.replaceFirst("_m.", "_b.");
 
                     Photo photo = new Photo(title, author, authorID, link, tags, link);
                     mPhotoList.add(photo);
