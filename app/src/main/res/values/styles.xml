@@ -9,7 +9,6 @@
         <item name="android:icon">@color/icons</item>
         <item name="android:windowBackground">@color/primary_light</item>
         <item name="cardBackgroundColor">@color/primary</item>
-        <item name="android:navigationBarColor">@color/primary_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
