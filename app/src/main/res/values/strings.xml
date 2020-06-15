@@ -11,4 +11,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_search">Search Activity</string>
     <string name="title_activity_photo_detail">Photo Detail</string>
+    <string name="browse_image_description">Downloaded Flickr Image</string>
+    <string name="browse_image_title">Image Title</string>
+    <string name="photo_detail_full_image">Flickr Full Photo Image</string>
+    <string name="photo_author">Photo Author</string>
+    <string name="photo_tags">Photo Tags</string>
 </resources>
