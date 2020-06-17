@@ -1,12 +1,13 @@
 package com.jocabujat.flickrbrowser;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,9 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
         mFlickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(this, new ArrayList<Photo>());
         recyclerView.setAdapter(mFlickrRecyclerViewAdapter);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String queryResult = sharedPreferences.getString(FLICKR_QUERY, "flickr");
+
 
         Log.d(TAG, "onCreate: ends");
     }
@@ -45,10 +49,15 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
         Log.d(TAG, "onResume: starts");
         super.onResume();
 
-        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this,
-                "https://api.flickr.com/services/feeds/photos_public.gne",
-                "us-en", true);
-        getFlickrJsonData.execute("android", "nougat");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String queryResult = sharedPreferences.getString(FLICKR_QUERY, "flickr");
+        if (!queryResult.isEmpty()) {
+            String tags = queryResult.replaceAll(" ", ",");
+            GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this,
+                    "https://api.flickr.com/services/feeds/photos_public.gne",
+                    "us-en", true);
+            getFlickrJsonData.execute(tags);
+        }
 
         Log.d(TAG, "onResume: complete");
     }
@@ -73,6 +82,12 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
             return true;
         }
 
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -90,7 +105,9 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
     @Override
     public void OnItemClick(View view, int position) {
         Log.d(TAG, "OnItemClick: starts");
-        Toast.makeText(MainActivity.this, "Normal tap at position " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, PhotoDetailActivity.class);
+        intent.putExtra(PHOTO_TRANSFER, mFlickrRecyclerViewAdapter.getPhoto(position));
+        startActivity(intent);
     }
 
     @Override
